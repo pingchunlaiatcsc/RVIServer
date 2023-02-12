@@ -14,28 +14,32 @@ using System.Collections;
 using prjTCP_ChatRoomServer;
 using System.IO;
 using Newtonsoft.Json;
+using RVIServer.Models;
 
 namespace RVIServer
 {
-    public partial class RVITakePic : Form
+    public partial class RVIServer : Form
     {
         TcpListener Server;             //伺服器網路監聽物件 (電話總機)
         Socket Client;                  //客戶連線物件       (電話分機)
         Thread Th_Svr;                  //伺服器監聽執行緒   (電話總機開放中))
         Thread Th_Clt;                  //客戶通話執行緒     (電話分機連線中)
+        Thread Th_forCCTV;
         Hashtable myHashTable = new Hashtable(); //客戶名稱與通訊物件的集合(key:Name, Socket)
+        static Queue<string> CCTVWorkQueue = new Queue<string>();
+        static string PhotosPath;
 
-        public RVITakePic()
+        public RVIServer()
         {
             InitializeComponent();
             tb_IP.Text = MyIP();
             using (ReadINI oTINI = new ReadINI(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config.ini")))
             {
                 tb_Port.Text = oTINI.getKeyValue("ServerPort", "Value"); //Section name=Worklog；Key name=Value
+                PhotosPath = oTINI.getKeyValue("PhotosPath", "Value");
             }
             ServerStart();
         }
-
         private string MyIP()
         {
             string hostName = Dns.GetHostName();
@@ -49,7 +53,6 @@ namespace RVIServer
             }
             return "";  //找不到合格回傳空字串
         }
-
         //建立線上名單
         private TCPClientData OnlineList()
         {
@@ -70,13 +73,6 @@ namespace RVIServer
             return UpdateUserList;
         }
 
-        private void SendTo(string Str, string User)
-        {
-
-            byte[] B = Encoding.Default.GetBytes(Str);
-            Socket Sck = (Socket)myHashTable[User];
-            Sck.Send(B, 0, B.Length, SocketFlags.None);
-        }
         private void SendAll(TCPClientData CMDJSON)
         {
             string Msg_JSON = JsonConvert.SerializeObject(CMDJSON);
@@ -102,6 +98,13 @@ namespace RVIServer
         //接受客戶連線要求的程式(如同電話總機的角色)，針對每一客戶會建立一個連線，以及獨立執行緒
         private void ServerSub()
         {
+
+            //建立CCTV拍照監聽執行序
+            Th_forCCTV = new Thread(ContinueDoCCTVWork);    //建立監聽執行緒
+            Th_forCCTV.IsBackground = true;     //設定為背景執行緒
+            Th_forCCTV.Start();
+            //建立CCTV拍照監聽執行序
+
             //Server IP 和 Port
             IPEndPoint EP = new IPEndPoint(IPAddress.Parse(tb_IP.Text), int.Parse(tb_Port.Text));
             Server = new TcpListener(EP);       //建立伺服器端監聽器(總機)
@@ -148,9 +151,18 @@ namespace RVIServer
                             Th.Abort();
                             SendAll(OnlineList());
                             break;
+                        case "TakePicture":
+                            tb_log.AppendText("(銷帳拍照)" + JsonData.DateAndTime + "_" + JsonData.CarId + "\r\n");      //顯示訊息並換行
+                            CCTVWorkQueue.Enqueue(JsonData.DateAndTime + "_" + JsonData.CarId);
+                            TCPClientData ReplyMsg = new TCPClientData
+                            {
+                                Command = "Reply",
+                                Sender = "Server",
+                                Message = "拍照完成"
+                            };
+                            Communicate.SendJSON(ReplyMsg);
+                            break;
                         default:
-                            //SendTo(JsonData.Target, Msg_JSON);
-                            SendTo(JsonData.Sender, "拍照完成");
                             break;
                     }
                 }
@@ -162,7 +174,18 @@ namespace RVIServer
                 }
             }
         }
-
+        private void ContinueDoCCTVWork()
+        {
+            CCTV.PhotosPath = PhotosPath;
+            while (true)
+            {
+                if (CCTVWorkQueue.Count != 0)
+                {
+                    CCTV.TakePic(CCTVWorkQueue.Dequeue());
+                    tb_log.AppendText(CCTV.errMessage);
+                }
+            }
+        }
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             using (ReadINI oTINI = new ReadINI("./Config.ini"))
@@ -180,16 +203,23 @@ namespace RVIServer
 
         private void btn_Kick_Click(object sender, EventArgs e)
         {
-            SendTo("9" + "|" + lb_UserList.SelectedItem.ToString(), lb_UserList.SelectedItem.ToString());
+            //SendTo("9" + "|" + lb_UserList.SelectedItem.ToString(), lb_UserList.SelectedItem.ToString());
         }
-        class TCPClientData
+
+
+        private void btn_KickAll_Click(object sender, EventArgs e)
         {
-            public string Command { get; set; }
-            public string DateAndTime { get; set; }
-            public string CarId { get; internal set; }
-            public string Target { get; set; }
-            public string Sender { get; set; }
-            public string UserList { get; set; }
+            ListBox tmp_lb = new ListBox();
+            foreach (var item in lb_UserList.Items)
+            {
+                tmp_lb.Items.Add(item);
+            }
+            foreach (var item in tmp_lb.Items)
+            {
+                myHashTable.Remove(item);    //有使用者離開:從名單中移除該使用者
+                lb_UserList.Items.Remove(item);
+            }
+            SendAll(OnlineList());
         }
     }
 }
