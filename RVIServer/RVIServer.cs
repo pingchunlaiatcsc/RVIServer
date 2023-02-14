@@ -153,7 +153,7 @@ namespace RVIServer
                             break;
                         case "TakePicture":
                             tb_log.AppendText("(銷帳拍照)" + JsonData.DateAndTime + "_" + JsonData.CarId + "\r\n");      //顯示訊息並換行
-                            //CCTVWorkQueue.Enqueue(JsonData.DateAndTime + "_" + JsonData.CarId);
+                            CCTVWorkQueue.Enqueue(JsonData.DateAndTime + "_" + JsonData.CarId);//將拍照任務加入佇列
                             TCPClientData ReplyMsg = new TCPClientData
                             {
                                 Command = "Reply",
@@ -162,7 +162,7 @@ namespace RVIServer
                             };
                             Communicate.T = Sck;
                             Communicate.SendJSON(ReplyMsg);
-                            tb_log.AppendText($"({ReplyMsg.Sender} send to {JsonData.Sender}) ：{ReplyMsg.Message}");
+                            tb_log.AppendText($"({ReplyMsg.Sender} send to {JsonData.Sender}) ：{ReplyMsg.Message}\r\n");
                             break;
                         default:
                             break;
