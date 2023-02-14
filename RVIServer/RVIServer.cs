@@ -218,11 +218,23 @@ namespace RVIServer
 
         private void RVIServer_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (e.CloseReason == CloseReason.UserClosing)
+            if (this.WindowState != FormWindowState.Minimized)
             {
+                //隱藏程式本身的視窗
+                //this.Hide();
                 e.Cancel = true;
                 this.WindowState = FormWindowState.Minimized;
-                return;
+                //notifyIcon1.Tag = string.Empty;
+
+                ////讓程式在工具列中隱藏
+                //this.ShowInTaskbar = false;
+                ////通知欄顯示Icon
+                notifyIcon1.Visible = true;
+
+                //通知欄提示 (顯示時間毫秒，標題，內文，類型)
+                notifyIcon1.ShowBalloonTip(1000, this.Text, "縮小至工作列圖示區", ToolTipIcon.Info);
+                //notifyIcon1.ShowBalloonTip(3000, this.Text,
+                //     "程式並未結束，要結束請在圖示上按右鍵，選取結束功能!", ToolTipIcon.Info);
             }
         }
 
@@ -241,6 +253,21 @@ namespace RVIServer
             }
             Application.ExitThread();
             Close();
+        }
+
+        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            this.Show();
+        }
+
+        private void ExitMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void RecoverMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Show();
         }
     }
 }

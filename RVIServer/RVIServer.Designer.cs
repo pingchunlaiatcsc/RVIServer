@@ -40,6 +40,10 @@
             this.btn_KickAll = new System.Windows.Forms.Button();
             this.tb_log = new System.Windows.Forms.TextBox();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.ExitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.RecoverMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // lb_UserList
@@ -106,7 +110,7 @@
             // btn_KickAll
             // 
             this.btn_KickAll.Location = new System.Drawing.Point(497, 8);
-            this.btn_KickAll.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn_KickAll.Margin = new System.Windows.Forms.Padding(2);
             this.btn_KickAll.Name = "btn_KickAll";
             this.btn_KickAll.Size = new System.Drawing.Size(75, 25);
             this.btn_KickAll.TabIndex = 8;
@@ -127,9 +131,33 @@
             // 
             // notifyIcon1
             // 
+            this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
             this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
             this.notifyIcon1.Text = "notifyIcon1";
             this.notifyIcon1.Visible = true;
+            this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ExitMenuItem,
+            this.RecoverMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(99, 48);
+            // 
+            // ExitMenuItem
+            // 
+            this.ExitMenuItem.Name = "ExitMenuItem";
+            this.ExitMenuItem.Size = new System.Drawing.Size(98, 22);
+            this.ExitMenuItem.Text = "關閉";
+            this.ExitMenuItem.Click += new System.EventHandler(this.ExitMenuItem_Click);
+            // 
+            // RecoverMenuItem
+            // 
+            this.RecoverMenuItem.Name = "RecoverMenuItem";
+            this.RecoverMenuItem.Size = new System.Drawing.Size(98, 22);
+            this.RecoverMenuItem.Text = "還原";
+            this.RecoverMenuItem.Click += new System.EventHandler(this.RecoverMenuItem_Click);
             // 
             // RVIServer
             // 
@@ -150,6 +178,7 @@
             this.Text = "RVITakePic";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RVIServer_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.RVIServer_FormClosed);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -167,6 +196,9 @@
         private System.Windows.Forms.Button btn_KickAll;
         private System.Windows.Forms.TextBox tb_log;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem ExitMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem RecoverMenuItem;
     }
 }
 
