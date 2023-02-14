@@ -160,9 +160,11 @@ namespace RVIServer
                                 Sender = "Server",
                                 Message = "拍照完成"
                             };
+                            //這三行可能要移到ContinueDoCCTVWork流程上才對
                             Communicate.T = Sck;
                             Communicate.SendJSON(ReplyMsg);
                             tb_log.AppendText($"({ReplyMsg.Sender} send to {JsonData.Sender}) ：{ReplyMsg.Message}\r\n");
+                            //這三行可能要移到ContinueDoCCTVWork流程上才對
                             break;
                         default:
                             break;
