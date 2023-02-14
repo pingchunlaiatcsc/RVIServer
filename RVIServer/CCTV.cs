@@ -74,7 +74,7 @@ namespace RVIServer
                         {
                             // sr 就是伺服器回覆的資料
                             sr.CopyTo(fs);
-                            return "Photos Saved.\r\n";
+                            return $"{DateTime.Now} Photos Saved.\r\n";
                         }
                     }
                 }
