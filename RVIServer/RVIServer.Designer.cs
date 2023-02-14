@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RVIServer));
             this.lb_UserList = new System.Windows.Forms.ListBox();
             this.lable1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -37,71 +39,65 @@
             this.btn_Restart = new System.Windows.Forms.Button();
             this.btn_KickAll = new System.Windows.Forms.Button();
             this.tb_log = new System.Windows.Forms.TextBox();
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.SuspendLayout();
             // 
             // lb_UserList
             // 
             this.lb_UserList.FormattingEnabled = true;
-            this.lb_UserList.ItemHeight = 18;
-            this.lb_UserList.Location = new System.Drawing.Point(13, 29);
-            this.lb_UserList.Margin = new System.Windows.Forms.Padding(4);
+            this.lb_UserList.ItemHeight = 12;
+            this.lb_UserList.Location = new System.Drawing.Point(9, 19);
             this.lb_UserList.Name = "lb_UserList";
-            this.lb_UserList.Size = new System.Drawing.Size(178, 130);
+            this.lb_UserList.Size = new System.Drawing.Size(120, 88);
             this.lb_UserList.TabIndex = 0;
             // 
             // lable1
             // 
             this.lable1.AutoSize = true;
-            this.lable1.Location = new System.Drawing.Point(13, 7);
-            this.lable1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lable1.Location = new System.Drawing.Point(9, 5);
             this.lable1.Name = "lable1";
-            this.lable1.Size = new System.Drawing.Size(98, 18);
+            this.lable1.Size = new System.Drawing.Size(65, 12);
             this.lable1.TabIndex = 1;
             this.lable1.Text = "線上使用者";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(212, 34);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Location = new System.Drawing.Point(141, 23);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(73, 18);
+            this.label2.Size = new System.Drawing.Size(48, 12);
             this.label2.TabIndex = 2;
             this.label2.Text = "Server IP";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(215, 92);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Location = new System.Drawing.Point(143, 61);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(86, 18);
+            this.label3.Size = new System.Drawing.Size(57, 12);
             this.label3.TabIndex = 3;
             this.label3.Text = "Server Port";
             // 
             // tb_IP
             // 
             this.tb_IP.Enabled = false;
-            this.tb_IP.Location = new System.Drawing.Point(329, 29);
-            this.tb_IP.Margin = new System.Windows.Forms.Padding(4);
+            this.tb_IP.Location = new System.Drawing.Point(219, 19);
             this.tb_IP.Name = "tb_IP";
-            this.tb_IP.Size = new System.Drawing.Size(148, 29);
+            this.tb_IP.Size = new System.Drawing.Size(100, 22);
             this.tb_IP.TabIndex = 4;
             // 
             // tb_Port
             // 
-            this.tb_Port.Location = new System.Drawing.Point(329, 92);
-            this.tb_Port.Margin = new System.Windows.Forms.Padding(4);
+            this.tb_Port.Location = new System.Drawing.Point(219, 61);
             this.tb_Port.Name = "tb_Port";
-            this.tb_Port.Size = new System.Drawing.Size(148, 29);
+            this.tb_Port.Size = new System.Drawing.Size(100, 22);
             this.tb_Port.TabIndex = 5;
             // 
             // btn_Restart
             // 
-            this.btn_Restart.Location = new System.Drawing.Point(329, 129);
-            this.btn_Restart.Margin = new System.Windows.Forms.Padding(4);
+            this.btn_Restart.Location = new System.Drawing.Point(219, 86);
             this.btn_Restart.Name = "btn_Restart";
-            this.btn_Restart.Size = new System.Drawing.Size(112, 34);
+            this.btn_Restart.Size = new System.Drawing.Size(75, 23);
             this.btn_Restart.TabIndex = 7;
             this.btn_Restart.Text = "Restart";
             this.btn_Restart.UseVisualStyleBackColor = true;
@@ -109,9 +105,10 @@
             // 
             // btn_KickAll
             // 
-            this.btn_KickAll.Location = new System.Drawing.Point(745, 12);
+            this.btn_KickAll.Location = new System.Drawing.Point(497, 8);
+            this.btn_KickAll.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btn_KickAll.Name = "btn_KickAll";
-            this.btn_KickAll.Size = new System.Drawing.Size(112, 37);
+            this.btn_KickAll.Size = new System.Drawing.Size(75, 25);
             this.btn_KickAll.TabIndex = 8;
             this.btn_KickAll.Text = "KickAll";
             this.btn_KickAll.UseVisualStyleBackColor = true;
@@ -120,20 +117,25 @@
             // 
             // tb_log
             // 
-            this.tb_log.Location = new System.Drawing.Point(13, 171);
-            this.tb_log.Margin = new System.Windows.Forms.Padding(4);
+            this.tb_log.Location = new System.Drawing.Point(9, 114);
             this.tb_log.Multiline = true;
             this.tb_log.Name = "tb_log";
             this.tb_log.ReadOnly = true;
             this.tb_log.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tb_log.Size = new System.Drawing.Size(526, 264);
+            this.tb_log.Size = new System.Drawing.Size(352, 177);
             this.tb_log.TabIndex = 9;
             // 
-            // RVITakePic
+            // notifyIcon1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
+            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.notifyIcon1.Text = "notifyIcon1";
+            this.notifyIcon1.Visible = true;
+            // 
+            // RVIServer
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(560, 442);
+            this.ClientSize = new System.Drawing.Size(373, 295);
             this.Controls.Add(this.tb_log);
             this.Controls.Add(this.btn_KickAll);
             this.Controls.Add(this.btn_Restart);
@@ -143,10 +145,11 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.lable1);
             this.Controls.Add(this.lb_UserList);
-            this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "RVITakePic";
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "RVIServer";
             this.Text = "RVITakePic";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RVIServer_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.RVIServer_FormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -163,6 +166,7 @@
         private System.Windows.Forms.Button btn_Restart;
         private System.Windows.Forms.Button btn_KickAll;
         private System.Windows.Forms.TextBox tb_log;
+        private System.Windows.Forms.NotifyIcon notifyIcon1;
     }
 }
 

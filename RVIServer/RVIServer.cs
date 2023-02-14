@@ -32,10 +32,10 @@ namespace RVIServer
         public RVIServer()
         {
             InitializeComponent();
-            tb_IP.Text = MyIP();
             using (ReadINI oTINI = new ReadINI(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config.ini")))
             {
-                tb_Port.Text = oTINI.getKeyValue("ServerPort", "Value"); //Section name=Worklog；Key name=Value
+                tb_IP.Text = oTINI.getKeyValue("ServerIP", "Value");
+                tb_Port.Text = oTINI.getKeyValue("ServerPort", "Value");
                 PhotosPath = oTINI.getKeyValue("PhotosPath", "Value");
             }
             ServerStart();
@@ -56,7 +56,7 @@ namespace RVIServer
         //建立線上名單
         private TCPClientData OnlineList()
         {
-            TCPClientData UpdateUserList= new TCPClientData();
+            TCPClientData UpdateUserList = new TCPClientData();
             string UserList = ""; //代表線上名單的命令碼
             for (int i = 0; i < lb_UserList.Items.Count; i++)
             {
@@ -94,11 +94,11 @@ namespace RVIServer
             Th_Svr = new Thread(ServerSub);
             Th_Svr.IsBackground = true;
             Th_Svr.Start();
+            tb_log.AppendText($"伺服器已啟動\r\n");
         }
         //接受客戶連線要求的程式(如同電話總機的角色)，針對每一客戶會建立一個連線，以及獨立執行緒
         private void ServerSub()
         {
-
             //建立CCTV拍照監聽執行序
             Th_forCCTV = new Thread(ContinueDoCCTVWork);    //建立監聽執行緒
             Th_forCCTV.IsBackground = true;     //設定為背景執行緒
@@ -128,7 +128,7 @@ namespace RVIServer
                 //用Sck來接收此客戶訊息，inLen是接收訊息的byte數目
                 try
                 {
-                    byte[] B = new byte[1023];  //建立接收資料用的陣列，長度需大於可能的訊息
+                    byte[] B = new byte[1024];  //建立接收資料用的陣列，長度需大於可能的訊息
                     int inLen = Sck.Receive(B); //接收網路資訊(byte陣列)
                     string Msg_JSON = Encoding.Default.GetString(B, 0, inLen);//翻譯實際訊息(長度inLen)
                     TCPClientData JsonData = JsonConvert.DeserializeObject<TCPClientData>(Msg_JSON);
@@ -153,14 +153,16 @@ namespace RVIServer
                             break;
                         case "TakePicture":
                             tb_log.AppendText("(銷帳拍照)" + JsonData.DateAndTime + "_" + JsonData.CarId + "\r\n");      //顯示訊息並換行
-                            CCTVWorkQueue.Enqueue(JsonData.DateAndTime + "_" + JsonData.CarId);
+                            //CCTVWorkQueue.Enqueue(JsonData.DateAndTime + "_" + JsonData.CarId);
                             TCPClientData ReplyMsg = new TCPClientData
                             {
                                 Command = "Reply",
                                 Sender = "Server",
                                 Message = "拍照完成"
                             };
+                            Communicate.T = Sck;
                             Communicate.SendJSON(ReplyMsg);
+                            tb_log.AppendText($"({ReplyMsg.Sender} send to {JsonData.Sender}) ：{ReplyMsg.Message}");
                             break;
                         default:
                             break;
@@ -185,14 +187,6 @@ namespace RVIServer
                     tb_log.AppendText(CCTV.errMessage);
                 }
             }
-        }
-        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            using (ReadINI oTINI = new ReadINI("./Config.ini"))
-            {
-                oTINI.setKeyValue("ServerPort", "Value", tb_Port.Text);
-            }
-            Application.ExitThread();
         }
 
         private void btn_Restart_Click(object sender, EventArgs e)
@@ -220,6 +214,33 @@ namespace RVIServer
                 lb_UserList.Items.Remove(item);
             }
             SendAll(OnlineList());
+        }
+
+        private void RVIServer_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                e.Cancel = true;
+                this.WindowState = FormWindowState.Minimized;
+                return;
+            }
+        }
+
+        private void RVIServer_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            try
+            {
+                using (ReadINI oTINI = new ReadINI("./Config.ini"))
+                {
+                    oTINI.setKeyValue("ServerPort", "Value", tb_Port.Text);
+                }
+            }
+            catch
+            {
+
+            }
+            Application.ExitThread();
+            Close();
         }
     }
 }
