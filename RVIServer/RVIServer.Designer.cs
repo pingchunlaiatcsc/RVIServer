@@ -92,6 +92,7 @@
             // 
             // tb_Port
             // 
+            this.tb_Port.Enabled = false;
             this.tb_Port.Location = new System.Drawing.Point(219, 61);
             this.tb_Port.Name = "tb_Port";
             this.tb_Port.Size = new System.Drawing.Size(100, 22);
@@ -175,7 +176,7 @@
             this.Controls.Add(this.lb_UserList);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "RVIServer";
-            this.Text = "RVITakePic";
+            this.Text = "RVIServer";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RVIServer_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.RVIServer_FormClosed);
             this.contextMenuStrip1.ResumeLayout(false);

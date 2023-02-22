@@ -13,23 +13,27 @@ namespace RVIServer
         public static string errMessage;
         public static string PhotosPath;
         public static Boolean debugMode;
-
+        public static string Username;
+        public static string Password;
+        public static string CCTVConfigFilename;
         public static void TakePic(string flowTimeAndCarId)
         {
-            string username = "admin";
-            string password = "Admin123";
-            string url = "";
             string i_str = "";
             CreateFolder(PhotosPath, flowTimeAndCarId);
-            for (int i = 1; i <= 13; i++)
+            List<string> CCTV_Config = Read_CCTV_CGI_Config();
+            //for (int i = 1; i <= 13; i++)
+            //{
+            //    i_str = i.ToString().PadLeft(2, '0');
+            //    url = $"http://192.168.7.1{i_str}/images/snapshot.jpg";
+            //    errMessage = HttpGetRequest_SaveCamPic(username, password, url, i_str, flowTimeAndCarId, PhotosPath);
+            //}
+            //i_str = "14";
+            //url = $"http://192.168.7.1{i_str}/PictureCatch.cgi?username={username}&password={password}&channel=1";
+
+            foreach (string url in CCTV_Config)
             {
-                i_str = i.ToString().PadLeft(2, '0');
-                url = $"http://192.168.7.1{i_str}/images/snapshot.jpg";
-                errMessage = HttpGetRequest_SaveCamPic(username, password, url, i_str, flowTimeAndCarId, PhotosPath);
+                errMessage = HttpGetRequest_SaveCamPic(Username, Password, url, i_str, flowTimeAndCarId, PhotosPath);
             }
-            i_str = "14";
-            url = $"http://192.168.7.1{i_str}/PictureCatch.cgi?username={username}&password={password}&channel=1";
-            errMessage = HttpGetRequest_SaveCamPic(username, password, url, i_str, flowTimeAndCarId, PhotosPath);
 
             //Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config.ini")
         }
@@ -51,6 +55,30 @@ namespace RVIServer
                 if (debugMode) File.AppendAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "upload_err_log.txt"), DateTime.Now + " " + errMessage.ToString() + "\n");
             }
         }
+        static List<string> Read_CCTV_CGI_Config()
+        {
+            string myLogPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, CCTVConfigFilename);
+            List<string> allLines = new List<string>();
+            try
+            {
+                using (var fs = new FileStream(myLogPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                using (var logFileReader = new StreamReader(fs, ASCIIEncoding.Default))
+                {
+                    while (!logFileReader.EndOfStream)
+                    {
+                        allLines.Add(logFileReader.ReadLine());
+                    }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+            }
+            return allLines;
+
+        }
+
         static string HttpGetRequest_SaveCamPic(string username, string password, string url, string i_str, string flowTimeAndCarId, string folderPath)
         {
             CookieContainer cookieContainer = new CookieContainer();

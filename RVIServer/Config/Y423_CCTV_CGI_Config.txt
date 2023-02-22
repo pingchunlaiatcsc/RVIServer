@@ -1,0 +1,14 @@
+﻿http://192.168.7.101/images/snapshot.jpg
+http://192.168.7.102/images/snapshot.jpg
+http://192.168.7.103/images/snapshot.jpg
+http://192.168.7.104/images/snapshot.jpg
+http://192.168.7.105/images/snapshot.jpg
+http://192.168.7.106/images/snapshot.jpg
+http://192.168.7.107/images/snapshot.jpg
+http://192.168.7.108/images/snapshot.jpg
+http://192.168.7.109/images/snapshot.jpg
+http://192.168.7.110/images/snapshot.jpg
+http://192.168.7.111/images/snapshot.jpg
+http://192.168.7.112/images/snapshot.jpg
+http://192.168.7.113/images/snapshot.jpg
+http://192.168.7.114/PictureCatch.cgi?username=admin&password=admin&channel=1

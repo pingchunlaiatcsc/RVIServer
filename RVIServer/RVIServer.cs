@@ -15,6 +15,9 @@ using prjTCP_ChatRoomServer;
 using System.IO;
 using Newtonsoft.Json;
 using RVIServer.Models;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
+using System.Diagnostics;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace RVIServer
 {
@@ -28,18 +31,41 @@ namespace RVIServer
         Hashtable myHashTable = new Hashtable(); //客戶名稱與通訊物件的集合(key:Name, Socket)
         static Queue<string> CCTVWorkQueue = new Queue<string>();
         static string PhotosPath;
+        static string Location;
+        static string Username;
+        static string Password;
+        static string CCTVConfigFilename;
 
         public RVIServer()
         {
-            InitializeComponent();
+            InitializeComponent();           
+
             using (ReadINI oTINI = new ReadINI(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config.ini")))
             {
                 tb_IP.Text = oTINI.getKeyValue("ServerIP", "Value");
                 tb_Port.Text = oTINI.getKeyValue("ServerPort", "Value");
                 PhotosPath = oTINI.getKeyValue("PhotosPath", "Value");
+                Location = oTINI.getKeyValue("Location", "Value");
+                switch (Location)
+                {
+                    case "C349_1":
+                        Username = oTINI.getKeyValue("C349_1_CCTV_CGI_Config", "Username");
+                        Password = oTINI.getKeyValue("C349_1_CCTV_CGI_Config", "Password");
+                        CCTVConfigFilename = oTINI.getKeyValue("C349_1_CCTV_CGI_Config", "CCTVConfigFilename");
+                        break;
+                    case "Y423":
+                        Username = oTINI.getKeyValue("Y423_CCTV_CGI_Config", "Username");
+                        Password = oTINI.getKeyValue("Y423_CCTV_CGI_Config", "Password");
+                        CCTVConfigFilename = oTINI.getKeyValue("Y423_CCTV_CGI_Config", "CCTVConfigFilename");
+                        break;
+                    default:
+                        break;
+                }
             }
             ServerStart();
         }
+
+
         private string MyIP()
         {
             string hostName = Dns.GetHostName();
@@ -181,6 +207,10 @@ namespace RVIServer
         private void ContinueDoCCTVWork()
         {
             CCTV.PhotosPath = PhotosPath;
+            CCTV.Username = Username;
+            CCTV.Password = Password;
+            CCTV.File = Password;
+
             while (true)
             {
                 if (CCTVWorkQueue.Count != 0)
