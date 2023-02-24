@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
+using System.Security.Policy;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace RVIServer
@@ -16,9 +19,11 @@ namespace RVIServer
         public static string Username;
         public static string Password;
         public static string CCTVConfigFilename;
-        public static void TakePic(string flowTimeAndCarId)
+        public static string Location;
+        public static async Task TakePicEach(string flowTimeAndCarId)
         {
-            string i_str = "";
+            int i_str = 0;
+
             CreateFolder(PhotosPath, flowTimeAndCarId);
             List<string> CCTV_Config = Read_CCTV_CGI_Config();
             //for (int i = 1; i <= 13; i++)
@@ -32,10 +37,30 @@ namespace RVIServer
 
             foreach (string url in CCTV_Config)
             {
-                errMessage = HttpGetRequest_SaveCamPic(Username, Password, url, i_str, flowTimeAndCarId, PhotosPath);
+                if (i_str != 6 && Location=="C349_1")
+                {
+                    errMessage = HttpGetRequest_SaveCamPic(Username, Password, url, i_str.ToString(), flowTimeAndCarId, PhotosPath);
+                }
+                i_str++;
             }
 
+            //string url = CCTV_Config.ElementAt(0).ToString();
+            //Task task = TakePicOne(url, i_str.ToString(), flowTimeAndCarId);
+
+            //for (int i = 1; i < CCTV_Config.Count; i++)
+            //{
+            //    url = CCTV_Config.ElementAt(i).ToString();
+            //    task = TakePicOne(url, i_str.ToString(), flowTimeAndCarId);
+            //    i_str++;
+            //}
+            //await task;
+
             //Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config.ini")
+        }
+        static public async Task TakePicOne(string url, string i_str, string flowTimeAndCarId)
+        {
+            errMessage = HttpGetRequest_SaveCamPic(Username, Password, url, i_str.ToString(), flowTimeAndCarId, PhotosPath);
+            await Task.Delay(100);
         }
         static void CreateFolder(string photosPath, string flowTimeAndCarId)
         {

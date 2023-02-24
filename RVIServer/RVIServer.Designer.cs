@@ -43,6 +43,8 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ExitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RecoverMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tb_Location = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -67,7 +69,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(141, 23);
+            this.label2.Location = new System.Drawing.Point(136, 65);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(48, 12);
             this.label2.TabIndex = 2;
@@ -76,7 +78,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(143, 61);
+            this.label3.Location = new System.Drawing.Point(136, 90);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(57, 12);
             this.label3.TabIndex = 3;
@@ -85,7 +87,7 @@
             // tb_IP
             // 
             this.tb_IP.Enabled = false;
-            this.tb_IP.Location = new System.Drawing.Point(219, 19);
+            this.tb_IP.Location = new System.Drawing.Point(198, 61);
             this.tb_IP.Name = "tb_IP";
             this.tb_IP.Size = new System.Drawing.Size(100, 22);
             this.tb_IP.TabIndex = 4;
@@ -93,14 +95,14 @@
             // tb_Port
             // 
             this.tb_Port.Enabled = false;
-            this.tb_Port.Location = new System.Drawing.Point(219, 61);
+            this.tb_Port.Location = new System.Drawing.Point(198, 89);
             this.tb_Port.Name = "tb_Port";
             this.tb_Port.Size = new System.Drawing.Size(100, 22);
             this.tb_Port.TabIndex = 5;
             // 
             // btn_Restart
             // 
-            this.btn_Restart.Location = new System.Drawing.Point(219, 86);
+            this.btn_Restart.Location = new System.Drawing.Point(198, 117);
             this.btn_Restart.Name = "btn_Restart";
             this.btn_Restart.Size = new System.Drawing.Size(75, 23);
             this.btn_Restart.TabIndex = 7;
@@ -122,12 +124,12 @@
             // 
             // tb_log
             // 
-            this.tb_log.Location = new System.Drawing.Point(9, 114);
+            this.tb_log.Location = new System.Drawing.Point(9, 153);
             this.tb_log.Multiline = true;
             this.tb_log.Name = "tb_log";
             this.tb_log.ReadOnly = true;
             this.tb_log.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tb_log.Size = new System.Drawing.Size(352, 177);
+            this.tb_log.Size = new System.Drawing.Size(320, 138);
             this.tb_log.TabIndex = 9;
             // 
             // notifyIcon1
@@ -160,11 +162,30 @@
             this.RecoverMenuItem.Text = "還原";
             this.RecoverMenuItem.Click += new System.EventHandler(this.RecoverMenuItem_Click);
             // 
+            // tb_Location
+            // 
+            this.tb_Location.Enabled = false;
+            this.tb_Location.Location = new System.Drawing.Point(198, 33);
+            this.tb_Location.Name = "tb_Location";
+            this.tb_Location.Size = new System.Drawing.Size(100, 22);
+            this.tb_Location.TabIndex = 10;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(135, 36);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(46, 12);
+            this.label1.TabIndex = 11;
+            this.label1.Text = "Location";
+            // 
             // RVIServer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(373, 295);
+            this.ClientSize = new System.Drawing.Size(339, 295);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.tb_Location);
             this.Controls.Add(this.tb_log);
             this.Controls.Add(this.btn_KickAll);
             this.Controls.Add(this.btn_Restart);
@@ -200,6 +221,8 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem ExitMenuItem;
         private System.Windows.Forms.ToolStripMenuItem RecoverMenuItem;
+        private System.Windows.Forms.TextBox tb_Location;
+        private System.Windows.Forms.Label label1;
     }
 }
 

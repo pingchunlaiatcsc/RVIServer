@@ -84,6 +84,7 @@
     <Compile Include="ReadINI.cs" />
     <EmbeddedResource Include="RVIServer.resx">
       <DependentUpon>RVIServer.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -95,7 +96,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="Config.ini">
+    <None Include="APP_Config.ini">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
@@ -113,11 +114,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Config\Y423_CCTV_CGI_Config.txt">
+    <Content Include="CCTV_Config\C349_2_CCTV_CGI_Config.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CCTV_Config\Y423_CCTV_CGI_Config.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="camera.ico" />
-    <Content Include="Config\C349_1_CCTV_CGI_Config.txt">
+    <Content Include="CCTV_Config\C349_1_CCTV_CGI_Config.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

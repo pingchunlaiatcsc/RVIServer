@@ -40,27 +40,29 @@ namespace RVIServer
         {
             InitializeComponent();           
 
-            using (ReadINI oTINI = new ReadINI(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config.ini")))
+            using (ReadINI oTINI = new ReadINI(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "APP_Config.ini")))
             {
-                tb_IP.Text = oTINI.getKeyValue("ServerIP", "Value");
-                tb_Port.Text = oTINI.getKeyValue("ServerPort", "Value");
-                PhotosPath = oTINI.getKeyValue("PhotosPath", "Value");
                 Location = oTINI.getKeyValue("Location", "Value");
+                string config_file = "";
                 switch (Location)
                 {
                     case "C349_1":
-                        Username = oTINI.getKeyValue("C349_1_CCTV_CGI_Config", "Username");
-                        Password = oTINI.getKeyValue("C349_1_CCTV_CGI_Config", "Password");
-                        CCTVConfigFilename = oTINI.getKeyValue("C349_1_CCTV_CGI_Config", "CCTVConfigFilename");
-                        break;
+                    case "C349_2":
                     case "Y423":
-                        Username = oTINI.getKeyValue("Y423_CCTV_CGI_Config", "Username");
-                        Password = oTINI.getKeyValue("Y423_CCTV_CGI_Config", "Password");
-                        CCTVConfigFilename = oTINI.getKeyValue("Y423_CCTV_CGI_Config", "CCTVConfigFilename");
+                    case "TestEnv":
+                        config_file = $"{Location}_Config";
                         break;
                     default:
+                        config_file = "Default_Config";
                         break;
                 }
+                Username = oTINI.getKeyValue(config_file, "Username");
+                Password = oTINI.getKeyValue(config_file, "Password");
+                tb_IP.Text = oTINI.getKeyValue(config_file, "ServerIP");
+                tb_Port.Text = oTINI.getKeyValue(config_file, "ServerPort");
+                tb_Location.Text = Location;
+                PhotosPath = oTINI.getKeyValue(config_file, "PhotosPath");
+                CCTVConfigFilename = oTINI.getKeyValue(config_file, "CCTVConfigFilename");
             }
             ServerStart();
         }
@@ -209,13 +211,13 @@ namespace RVIServer
             CCTV.PhotosPath = PhotosPath;
             CCTV.Username = Username;
             CCTV.Password = Password;
-            CCTV.File = Password;
-
+            CCTV.CCTVConfigFilename = CCTVConfigFilename;
+            CCTV.Location = Location;
             while (true)
             {
                 if (CCTVWorkQueue.Count != 0)
                 {
-                    CCTV.TakePic(CCTVWorkQueue.Dequeue());
+                    CCTV.TakePicEach(CCTVWorkQueue.Dequeue());
                     tb_log.AppendText(CCTV.errMessage);
                 }
             }
@@ -272,17 +274,6 @@ namespace RVIServer
 
         private void RVIServer_FormClosed(object sender, FormClosedEventArgs e)
         {
-            try
-            {
-                using (ReadINI oTINI = new ReadINI("./Config.ini"))
-                {
-                    oTINI.setKeyValue("ServerPort", "Value", tb_Port.Text);
-                }
-            }
-            catch
-            {
-
-            }
             Application.ExitThread();
             Close();
         }
