@@ -4,5 +4,3 @@ http://192.168.100.117/images/snapshot.jpg
 http://192.168.100.121/images/snapshot.jpg
 http://192.168.100.122/images/snapshot.jpg
 http://192.168.100.115/images/snapshot.jpg
-http://192.168.100.81/images/snapshot.jpg
-http://192.168.100.82/images/snapshot.jpg

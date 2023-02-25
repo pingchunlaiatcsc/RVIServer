@@ -37,10 +37,7 @@ namespace RVIServer
 
             foreach (string url in CCTV_Config)
             {
-                if (i_str != 6 && Location=="C349_1")
-                {
-                    errMessage = HttpGetRequest_SaveCamPic(Username, Password, url, i_str.ToString(), flowTimeAndCarId, PhotosPath);
-                }
+                errMessage = HttpGetRequest_SaveCamPic(Username, Password, url, i_str.ToString(), flowTimeAndCarId, PhotosPath);
                 i_str++;
             }
 
